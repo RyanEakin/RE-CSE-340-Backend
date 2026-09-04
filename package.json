@@ -1,0 +1,27 @@
+{
+  "name": "re-cse-340-backend",
+  "version": "1.0.0",
+  "description": "first node js program",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyanEakin/RE-CSE-340-Backend.git"
+  },
+  "author": "ryan eakin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RyanEakin/RE-CSE-340-Backend/issues"
+  },
+  "homepage": "https://github.com/RyanEakin/RE-CSE-340-Backend#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
