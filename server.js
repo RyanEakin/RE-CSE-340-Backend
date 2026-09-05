@@ -2,6 +2,16 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+/**
+ * Code Standards for this project:
+ * const is used where possible.
+ * camelCase is used for all variables.
+ * All functions should use arrow notation (const xxx = () -> {} )
+ * Async/await is used rather than promises or callbacks
+ * ESM export/import syntax is used.
+ * <%= %> rather than <%- %> should be used for all EJS data except the header and footer partials.
+ */
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -43,6 +53,11 @@ app.get('/organizations', async (req, res) => {
 app.get('/projects', async (req, res) => {
     const title = 'Service Projects';
     res.render('projects', { title });
+});
+
+app.get('/categories', async (req, res) => {
+    const title = 'Categories';
+    res.render('categories', { title });
 });
 
 

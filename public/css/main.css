@@ -1,30 +1,327 @@
-html, body {
-    background-color: lightblue;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-}
+/* =========================
+   Base / Reset
+========================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+} /*sets */
+
+html {
+  min-width: 320px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+} /*removes horizontal scrolling, 
+    makes sure the scrolling is smooth no matter what
+    and sets a mimnimum width for the website*/
 
 body {
-    nav {
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 
-        li {
-            display: inline;
-            margin-right: 15px;
-        }
+  background-color: #f4f7f9;
+  color: #1f2933;
+  font-family:
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+/*
+    removes any margins added by the browser
+    sets a minimum height for the visible webpage
+    sets the layout to be flex and the type to be a column
+    sets the background color to white and text color to dark blue
+    sets the font to be first segoe UI and finally sans-serif
+    sets font size to be relative element of 1
+    sets the vertical spacing between lines to be 1.6
+*/
 
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
+/* Prevent long text, links, or other content from causing overflow */
+body,
+main,
+nav,
+footer,
+p,
+h1,
+h2,
+a {
+  overflow-wrap: anywhere;
+}
 
-            &:hover {
-                color: #0066cc;
-            }
-        }
+/* Make media responsive */
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================
+   Navigation
+========================= */
+
+
+nav {
+  width: 100%;
+  background-color: #123b5d;
+  border-bottom: 4px solid #e09f3e;
+} /*sets the nav item to take the WHOLE width of the nav container*/
+
+nav button {
+    display: none;
+    position: relative;
+    background-color: #123b5d;
+    color:#ffffff;
+    width: 15%;
+    height: 50px;
+    font-size: xx-large;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    border: none;
+    
+}/*makes the menu button merge into the background color and hides it in the desktop view
+    it also sets the position and size properly and makes sure it is on the right.
+    I hate positioning in CSS BECAUSE it is so convoluted. technical debt I guess.
+*/
+
+nav button:active {
+    background-color: #16456b;
+} /*changes the color when hovering over the menu button, oh and anything that is dealing with
+    nav button I added... with some minor reminders from AI and web-dev websites*/
+
+nav ul {
+  width: min(100% - 2rem, 1100px);
+  margin: 0 auto;
+  padding: 0.75rem 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+
+  list-style: none;
+} /*gap sets the space around the items in a layout, either grid or flex
+    flex-wrap allows for item wrapping behavior where the containers move based on screen space*/
+
+nav li {
+  margin: 0;
+  padding: 0;
+} /*removes browser based margins and paddings*/
+
+nav a {
+  display: inline-block;
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  border-radius: 0.35rem;
+  /*font-size and weight are as they are in written works
+  text-decration deals with the underline on links and in this case removes them
+  and border-radius deals with the OUTER borders edge*/
+
+  transition:
+    background-color 160ms ease-in-out,
+    color 160ms ease-in-out;
+    /*transition allows for one-way animations in css*/
+
+}
+
+nav a:hover {
+  background-color: #ffffff;
+  color: #123b5d;
+}
+
+nav a:focus-visible {
+  outline: 3px solid #ffd166;
+  outline-offset: 3px;
+  background-color: #ffffff;
+  color: #123b5d;
+} /*outline deals with the outer line outside of container 
+    and outline-offset deals border to outline distance*/
+
+@media screen and (max-width: 1025px){ /*this only works on mobile displays*/
+    nav button {
+        display: flex;
     }
-}                
+    nav ul {
+        display: none;
+    }
+    /*
+        the above makes the nav list disappear
+        the below makes it appear when open is added to the class via menu.mjs
+
+    */
+
+    .open {
+        display: block;
+        width: 100%;
+    }
+} /*sets up responsive design for hamburger menu*/
+
+/* =========================
+   Main Content
+========================= */
+
+main {
+  width: min(100% - 2rem, 900px);
+  margin: clamp(2rem, 6vw, 5rem) auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  /*padding is part of the box container model which goes like this:
+    0. content
+    1. padding
+    2. border
+    3. margin
+    */
+
+  flex: 1;
+  background-color: #ffffff;
+  border: 1px solid #ccd6df;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.5rem rgb(18 59 93 / 10%);
+  /*box shadow is similar to outline, but has an effect where it is strongest around the margin
+    but weakens as it goes out, this is to create depth usually*/
+}
+
+h1,
+h2 {
+  margin-top: 0;
+  color: #123b5d;
+  line-height: 1.2;
+  text-wrap: balance;
+  /*text-wrap wraps text, nuff said*/
+}
+
+h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  /*margin bottom [and any direction for that matter] effects ONLY the selected side
+    to change its size of, so for bottom ONLY items below the container are affected 
+    and pushed down*/
+}
+
+h2 {
+  margin-bottom: 1rem;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+p {
+  max-width: 70ch;
+  margin: 0 0 1.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+}
+
+/* =========================
+   Logo
+========================= */
+
+.main-logo {
+  width: min(100%, 520px);
+  margin: 2rem auto 0;
+  border-radius: 0.5rem;
+}
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+  width: 100%;
+  margin-top: auto;
+  padding: 1.5rem 1rem;
+
+  background-color: #123b5d;
+  color: #ffffff;
+  text-align: center;
+  /*aligns text to center*/
+}
+
+footer p {
+  max-width: none;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* =========================
+   Smaller Screens
+========================= */
+
+@media (max-width: 600px) {
+  nav ul {
+    width: min(100% - 1rem, 1100px);
+    gap: 0.35rem;
+  }
+
+  nav li {
+    flex: 1 1 calc(50% - 0.35rem);
+    /*this is a unique method of using flex to create a repeating pattern
+        calc however is to calculate the expression within the parenthesis and provide the result*/
+  }
+
+  nav a {
+    width: 100%;
+    text-align: center;
+  }
+
+  main {
+    width: min(100% - 1rem, 900px);
+    margin: 1rem auto;
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Very narrow mobile screens */
+@media (max-width: 360px) {
+  nav li {
+    flex-basis: 100%;
+    /*sets default size of flex containers*/
+  }
+
+  main {
+    padding: 1rem;
+  }
+}
+
+/* =========================
+   Reduced Motion
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    /*!important is basically stating "do this first!"
+    while animation is the two way version of transition*/
+  }
+}
