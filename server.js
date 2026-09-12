@@ -50,9 +50,12 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
+    console.log("the cake is a lie");
     const organizations = await getAllOrganizations();
     const title = 'Our Partner Organizations';
 
+    const con_test = await testConnection();
+    console.log(con_test);
     res.render('organizations', { title, organizations });
 });
 
