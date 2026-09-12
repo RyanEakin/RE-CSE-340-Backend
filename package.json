@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "first node js program",
   "main": "server.js",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -20,7 +21,8 @@
   "homepage": "https://github.com/RyanEakin/RE-CSE-340-Backend#readme",
   "dependencies": {
     "ejs": "^6.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
