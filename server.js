@@ -50,32 +50,19 @@ app.get('/', async (req, res) => {
     res.render('home', { title });
 });
 
-app.get('/organizations', async (req, res, next) => {
-  try {
+app.get('/organizations', async (req, res) => {
     const organizations = await getAllOrganizations();
+    const title = 'Our Partner Organizations';
 
-    res.render('organizations', {
-      title: 'Our Partner Organizations',
-      organizations: Array.isArray(organizations) ? organizations : []
-    });
-  } catch (error) {
-    console.error('GET /organizations failed:', error);
-    next(error);
-  }
+    res.render('organizations', { title, organizations });
 });
 
-app.get('/projects', async (req, res, next) => {
-  try {
-    const projects = await getAllProjects();
 
-    res.render('projects', {
-      title: 'Service Projects',
-      projects: Array.isArray(projects) ? projects : []
-    });
-  } catch (error) {
-    console.error('GET /projects failed:', error);
-    next(error);
-  }
+app.get('/projects', async (req, res) => {
+    const projects = await getAllProjects();
+    const title = 'Service Projects';
+
+    res.render('projects', { title, projects });
 });
 
 app.get('/categories', async (req, res) => {
