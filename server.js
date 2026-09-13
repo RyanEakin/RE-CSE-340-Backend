@@ -51,18 +51,16 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
-    const organizations = await getAllOrganizations();
     const title = 'Our Partner Organizations';
 
-    res.render('organizations', { title, organizations });
+    res.render('organizations', { title});
 });
 
 
 app.get('/projects', async (req, res) => {
-    const projects = await getAllProjects();
     const title = 'Service Projects';
 
-    res.render('projects', { title, projects });
+    res.render('projects', { title });
 });
 
 app.get('/categories', async (req, res) => {
