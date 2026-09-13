@@ -5,6 +5,7 @@ import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
 import path from 'path';
 
+//testing the external db connnection
 
 /**
  * Code Standards for this project:
