@@ -5,7 +5,7 @@ organizations.forEach(organization => {
     const logo = document.createElement('img');
     const name = document.createElement('strong');
 
-    logo.setAttribute('src',`/images/ ${organization.logo_filename}`)
+    logo.setAttribute('src',`/images/${organization.logo_filename}`)
     logo.setAttribute('alt',`${organization.name} logo`)
 
     name.value = organization.name;
@@ -13,7 +13,7 @@ organizations.forEach(organization => {
     list.appendChild(logo);
     list.appendChild(name);
 
-    list.value = organization.contact_email;
+    list.value = `: ${organization.contact_email}`;
 
     partners.appendChild(list);
      }); 

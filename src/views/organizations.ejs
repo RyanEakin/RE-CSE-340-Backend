@@ -5,7 +5,10 @@
 
 <p>Here are a few of our partner organizations:</p>
 <ul>
-
+    <!--<script type="module" src="/scripts/org_page.mjs"></script>-->
+    <% organizations.forEach(organization => { %>
+        <li><img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo"><strong><%= organization.name %></strong>: <%= organization.contact_email %></li>
+    <% }); %>
 </ul>
 
 </main>
