@@ -13,7 +13,11 @@ import { Pool } from 'pg';
  */
 const pool = new Pool({
     connectionString: process.env.DB_URL,
-    ssl: {rejectUnauthorized: false} //note for later... figure out how to get certs working with this file and the server --9/12/26
+    ssl: process.env.DB_URL?.includes('render.com')
+        ? { rejectUnauthorized: false }
+        : false
+         //note for later... figure out how to get certs working with this file and the server --9/12/26
+         // added Felipe's code to have it require that it is ONLY on render.com that this rejectUnauthorized instead of all sites. -- 9/16/25
 });
 
 /**
