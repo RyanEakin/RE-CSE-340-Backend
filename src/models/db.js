@@ -13,7 +13,7 @@ import { Pool } from 'pg';
  */
 const pool = new Pool({
     connectionString: process.env.DB_URL,
-    ssl: {rejectUnauthorized: false}
+    ssl: {rejectUnauthorized: false} //note for later... figure out how to get certs working with this file and the server --9/12/26
 });
 
 /**
