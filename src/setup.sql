@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS organizations;
-CREATE TABLE public.organizations
+-- DROP TABLE IF EXISTS organizations;
+CREATE TABLE IF NOT EXISTS public.organizations
 (
     organization_id SERIAL PRIMARY KEY,
     name character varying(150) NOT NULL,
@@ -29,7 +29,7 @@ VALUES
 
 -- Table: public.projects
 
-DROP TABLE IF EXISTS public.projects;
+-- DROP TABLE IF EXISTS public.projects;
 
 CREATE TABLE IF NOT EXISTS public.projects
 (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS public.projects
     CONSTRAINT organization_id FOREIGN KEY (organization_id)
         REFERENCES public.organizations (organization_id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE CASCADE
 )
 
 TABLESPACE pg_default;
@@ -56,7 +56,7 @@ ALTER TABLE IF EXISTS public.projects
 -- Insert sample data: Projects
 -- ========================================
 
-INSERT INTO public."Projects" (title, description, location, project_date, organization_id)
+INSERT INTO public.projects (title, description, location, project_date, organization_id)
 VALUES
 -- BrightFuture Builders (organization_id = 1)
 ('Community Center Renovation', 'Repairing and painting the local youth center.', '123 Main St, Springfield', '2026-10-05',1),
@@ -86,7 +86,7 @@ VALUES
 
 -- Table: public.category
 
-DROP TABLE IF EXISTS public.category;
+-- DROP TABLE IF EXISTS public.category;
 
 CREATE TABLE IF NOT EXISTS public.category
 (
@@ -116,7 +116,7 @@ VALUES
 ('Community Services'),
 
 -- Health and Wellness (category_id = 4)
-('Health and Wellness')
+('Health and Wellness');
 
 
 
@@ -150,7 +150,7 @@ ALTER TABLE IF EXISTS public.project_categories
 -- ========================================
 -- Insert sample data: project_categories
 -- ========================================
-INSERT INTO public.category (project_id,category_id)
+INSERT INTO public.project_categories (project_id,category_id)
 VALUES
 (1,3),
 (2,3),
