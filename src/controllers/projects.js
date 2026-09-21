@@ -1,4 +1,4 @@
-import { getAllProjects } from '../models/projects.js';
+import { getAllProjects, getProjectsByOrganizationId } from '../models/projects.js';
 
 const projectPage = async (req, res) => {
     const projects = await getAllProjects();
