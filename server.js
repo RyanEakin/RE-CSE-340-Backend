@@ -74,8 +74,6 @@ app.use(router);
 //         Error Handling Code           //
 ///////////////////////////////////////////
 
-
-
 // Catch-all route for 404 errors
 app.use((req, res, next) => {
     const err = new Error('Page Not Found');
@@ -103,6 +101,7 @@ app.use((err, req, res, next) => {
     // Render the appropriate error template
     res.status(status).render(`errors/${template}`, context);
 });
+
 
 ///////////////////////////////////////////
 //            Server-Start               //
