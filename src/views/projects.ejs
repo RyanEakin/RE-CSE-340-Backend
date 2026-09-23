@@ -1,11 +1,10 @@
 
 <%- include('partials/header') %>
 <main>
-    <h1><%= title %></h1>
-<h2>Upcoming Service Projects</h2>
+    <h2><%= title %></h2>
 <ul>
 <% projects.forEach(project => { %>
-    <li><strong><%= project.project_date %></strong>: <%= project.title %> (<%= project.name %>)</li>
+    <li><a href="/project/<%= project.project_id %>"><strong><%= project.project_date %></strong>: <%= project.title %> (<%= project.name %>)</a></li>
 <% }); %>
 </ul>
 
