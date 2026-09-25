@@ -4,11 +4,14 @@
 <ul>
 <% projDetails.forEach(project => { %>
     <p><strong><%= project.title %></strong>: <%= project.description %> <br> <strong>Date:</strong> <%= project.project_date %> ; <strong>Location:</strong> <%= project.location %></p>
-    <a href="/organization/<%= project.category_id %>"> <%= project.category_name %></a>
+    <a href="/organization/<%= project.organization_id %>">Back to <%= project.name %></a>
 <% }); %>
+
+<br>Tags:
 <% catDetails.forEach(category => { %>
     <li><a href="/category/<%= category.category_id %>"> <%= category.category_name %></a></li>
 <% }); %>
+
 </ul>
 
     </main>
