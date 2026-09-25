@@ -2,7 +2,7 @@
 <main>
     <h1><%= title %></h1>
     <% categories.forEach(category => { %>
-    <li><strong><%= category.category_name %></strong></li>
+    <a href="/category/<%= category.category_id %>"><li><strong><%= category.category_name %></strong></li></a>
     <% }); %>
     <!--
     <p>Environmental</p>
