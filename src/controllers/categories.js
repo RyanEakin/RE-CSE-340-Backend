@@ -8,10 +8,12 @@ const categoryPage = async (req, res) => {
 };
 
 const showCatDetailsPage = async (req,res) => {
-  const category_Id = req.params.id
-  const catDetails = await getCategoryById(category_Id);
-  const projDetails = await getProjectsByCategoryId(category_Id);
-  console.log(catDetails.category_name);
+  const categoryId = req.params.id
+  const catDetails = await getCategoryById(categoryId);
+  const projDetails = await getProjectsByCategoryId(categoryId);
+  
+  //console.log(catDetails.category_name); 
+  //used to verify that code was being properly called, model had a missing ' , ' between category_id and category_name.
 
   const title = catDetails.category_name;
 
