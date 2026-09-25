@@ -5,7 +5,7 @@ import { indexPage } from '../src/controllers/index.js';
 import { orgPage, showOrgDetailsPage } from '../src/controllers/organizations.js';
 import { projectPage, showProjDetailsPage } from '../src/controllers/projects.js';
 
-import { categoryPage } from '../src/controllers/categories.js';
+import { categoryPage, showCatDetailsPage } from '../src/controllers/categories.js';
 
 import { servError } from '../src/controllers/errors.js';
 
@@ -25,6 +25,7 @@ router.get('/projects', projectPage);
 router.get('/project/:id',showProjDetailsPage);
 
 router.get('/categories',categoryPage);
+router.get('/category/:id',showCatDetailsPage);
 
 router.get('/test-error',servError);
 
