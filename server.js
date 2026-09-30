@@ -32,6 +32,14 @@ const app = express();
   */
 
 ///////////////////////////////////////////
+//         POST-Request Setup            //
+///////////////////////////////////////////
+
+// Allow Express to receive and process common POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+///////////////////////////////////////////
 //          View-Engine Setup            //
 ///////////////////////////////////////////
 
