@@ -1,4 +1,6 @@
 import express from 'express';
+import session from 'express-session';
+import flash from './src/middleware/flash.js';
 import { fileURLToPath } from 'url';
 import { testConnection } from './src/models/db.js';
 import router from './src/routes.js';
@@ -15,6 +17,8 @@ import path from 'path';
  * <%= %> rather than <%- %> should be used for all EJS data except the header and footer partials.
  */
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -30,6 +34,16 @@ const app = express();
 /**
   * Configure Express middleware
   */
+
+app.use(session({
+  secret: SESSION_SECRET,
+  resave: false,
+  saveUnitialized: true,
+  cookie: {maxAge: 60 * 60 * 1000 } // Session expires in 1 hour of inactivity
+}))
+
+//flash middleware
+app.use(flash);
 
 ///////////////////////////////////////////
 //         POST-Request Setup            //
