@@ -6,6 +6,8 @@
     <div class="form-group">
       <label for="name">Organization Name</label>
       <input
+        required
+        maxlength="150"
         type="text"
         id="name"
         name="name"
@@ -15,6 +17,8 @@
     <div class="form-group">
       <label for="description">Description</label>
       <textarea
+        required
+        maxlength="500"
         id="description"
         name="description"
       ></textarea>
@@ -23,7 +27,8 @@
     <div class="form-group">
       <label for="contactEmail">Contact Email</label>
       <input
-        type="text"
+        required
+        type="email"
         id="contactEmail"
         name="contactEmail"
       />
