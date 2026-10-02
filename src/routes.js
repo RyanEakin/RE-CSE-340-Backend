@@ -31,7 +31,7 @@ router.get('/new_organization', displayOrganizationForm);
 router.post('/new_organization', organizationValidation, processOrganizationForm);
 
 router.get('/edit_organization/:id', showEditOrgForm);
-router.post('/edit_organization/:id', processEditOrgForm);
+router.post('/edit_organization/:id', organizationValidation, processEditOrgForm);
 
 router.get('/test-error',servError);
 
