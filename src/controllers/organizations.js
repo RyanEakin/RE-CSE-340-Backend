@@ -1,6 +1,6 @@
 import { body, validationResult } from 'express-validator';
 
-import { getAllOrganizations, getOrganizationDetails,createOrganization } from '../models/organizations.js';
+import { getAllOrganizations, getOrganizationDetails,createOrganization, updateOrganizations } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 
 
@@ -51,17 +51,7 @@ const displayOrganizationForm = async (requestAnimationFrame,res) => {
 };
 
 const processOrganizationForm = async (req, res) => {
-    // Check for validation errors
-    const results = validationResult(req);
-    if (!results.isEmpty()) {
-        // Validation failed - loop through errors
-        results.array().forEach((error) => {
-            req.flash('error', error.msg);
-        });
 
-        // Redirect back to the new organization form
-        return res.redirect('/new-organization');
-    }
 
     const { name, description, contactEmail } = req.body;
     const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations
@@ -71,4 +61,33 @@ const processOrganizationForm = async (req, res) => {
     res.redirect(`/organization/${organizationId}`);
 };
 
-export {orgPage, showOrgDetailsPage, displayOrganizationForm, processOrganizationForm, organizationValidation};
+const showEditOrgForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const organizationDetails = await getOrganizationDetails(organizationId);
+
+    const title = 'Edit Organization';
+    res.render('org_edit', { title, organizationDetails });
+};
+
+const processEditOrgForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const { name, description, contactEmail, logoFilename } = req.body;
+
+    // Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new organization form
+        return res.redirect(`/edit_organization/${organizationId}`);
+    }
+
+    await updateOrganizations(name, description, contactEmail, logoFilename, organizationId);
+    req.flash('success', 'Organization Edited successfully!');
+    res.redirect(`/organization/${organizationId}`);
+};
+
+export {orgPage, showOrgDetailsPage, displayOrganizationForm, processOrganizationForm, organizationValidation ,showEditOrgForm, processEditOrgForm};

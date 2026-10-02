@@ -2,7 +2,7 @@ import express from 'express';
 
 import { indexPage } from '../src/controllers/index.js';
 
-import { orgPage, showOrgDetailsPage, displayOrganizationForm, processOrganizationForm ,organizationValidation } from '../src/controllers/organizations.js';
+import { orgPage, showOrgDetailsPage, displayOrganizationForm, processOrganizationForm ,organizationValidation,showEditOrgForm, processEditOrgForm } from '../src/controllers/organizations.js';
 import { projectPage, showProjDetailsPage } from '../src/controllers/projects.js';
 
 import { categoryPage, showCatDetailsPage } from '../src/controllers/categories.js';
@@ -29,6 +29,9 @@ router.get('/category/:id',showCatDetailsPage);
 
 router.get('/new_organization', displayOrganizationForm);
 router.post('/new_organization', organizationValidation, processOrganizationForm);
+
+router.get('/edit_organization/:id', showEditOrgForm);
+router.post('/edit_organization/:id', processEditOrgForm);
 
 router.get('/test-error',servError);
 
