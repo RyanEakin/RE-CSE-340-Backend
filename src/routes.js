@@ -5,7 +5,7 @@ import { indexPage } from '../src/controllers/index.js';
 import { orgPage, showOrgDetailsPage, displayOrganizationForm, processOrganizationForm ,organizationValidation,showEditOrgForm, processEditOrgForm } from '../src/controllers/organizations.js';
 import { projectPage, showProjDetailsPage, showNewProjForm, processNewProjForm, projectValidation } from '../src/controllers/projects.js';
 
-import { categoryPage, showCatDetailsPage } from '../src/controllers/categories.js';
+import { categoryPage, showCatDetailsPage, showAssignCatForm, processAssignCatForm } from '../src/controllers/categories.js';
 
 import { servError } from '../src/controllers/errors.js';
 
@@ -35,6 +35,9 @@ router.post('/edit_organization/:id', organizationValidation, processEditOrgForm
 
 router.get('/new_project', showNewProjForm);
 router.post('/new_project', projectValidation, processNewProjForm);
+
+router.get('/cat_assign/:projectId', showAssignCatForm);
+router.post('/cat_assign/:projectId', processAssignCatForm);
 
 router.get('/test-error',servError);
 
