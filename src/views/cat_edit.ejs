@@ -2,22 +2,20 @@
 <main>
     <h1><%= title %></h1>
 
- <form action="/new_categories" method="POST">
+ <form action="/edit_categories/<%=catDetails.category_id%>" method="POST">
     <div class="form-group">
-      <label for="organizationId">Organization</label>
-      <select
-        id="categoryId"
-        name="categoryId"
+      <label for="name">Category Name</label>
+      <input
+        type="text"
+        id="categoryName"
+        name="categoryName"
+        value="<%=catDetails.category_name%>"
+        maxlength="150"
         required
-      >
-        <option value="">Select an category</option>
-        <% catDetails.forEach(cat => { %>
-          <option value="<%= cat.category_id %>"><%= cat.category_name %></option>
-        <% }); %>
-      </select>
+      />
     </div>
 
-    <button type="submit">Create Project</button>
+    <button type="submit">Edit Category</button>
     </form>
 </main>
 <%- include('partials/footer') %>

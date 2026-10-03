@@ -2,7 +2,7 @@ import db from './db.js'
 
 const getAllCategories = async() => {
     const query = `
-        SELECT category_id, category_name FROM public.category
+        SELECT category_id, category_name FROM public.category ORDER BY category_id;
     `;
 
     const result = await db.query(query);
@@ -113,12 +113,11 @@ const createCategory = async (name) => {
     return result.rows[0].category_id;
 };
 
-const updateCategory = async(Id,name) => {
+const editCategory = async(Id,name) => {
   try{
   const query = `
-    UPDATE categories
-    SET
-      category_name = $2,
+    UPDATE category
+    SET category_name = $2
     WHERE category_id = $1
     RETURNING category_id;
   `;
@@ -126,8 +125,8 @@ const updateCategory = async(Id,name) => {
   const queryParams = [Id,name];
   const result = await db.query(query, queryParams);
 
-  console.log(queryParams);
-  console.log(result);
+  //console.log(queryParams);
+  console.log(result.rows.length);
 
   if (result.rows.length  === 0) {
     throw new Error("Category not found")
@@ -142,4 +141,4 @@ const updateCategory = async(Id,name) => {
 };
 
 
-export {getAllCategories, getCategoriesByProjectId, getCategoryById, getProjectsByCategoryId, updateCategoryAssignments, createCategory, updateCategory}  
+export {getAllCategories, getCategoriesByProjectId, getCategoryById, getProjectsByCategoryId, updateCategoryAssignments, createCategory, editCategory}  

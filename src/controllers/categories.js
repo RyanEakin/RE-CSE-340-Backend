@@ -1,6 +1,6 @@
 import { body, validationResult } from 'express-validator';
 
-import { createCategory, getAllCategories, getCategoriesByProjectId, getCategoryById, getProjectsByCategoryId, updateCategory, updateCategoryAssignments } from '../models/categories.js';
+import { createCategory, getAllCategories, getCategoriesByProjectId, getCategoryById, getProjectsByCategoryId, editCategory, updateCategoryAssignments } from '../models/categories.js';
 import { getProjectDetails } from '../models/projects.js';
 
 const categoryPage = async (req, res) => {
@@ -83,20 +83,20 @@ const processNewCatForm = async (req, res) => {
 }
 
 const showEditCatForm = async (req,res) => {
-    const projectId = req.params.id;
-    const projDetails = await getCatDetails(projectId);
+    const categoryId = req.params.id;
+    const catDetails = await getCategoryById(categoryId);
 
-    const title = 'Edit Project';
-    res.render('proj_edit', {title, projDetails, orgDetails});
+    const title = 'Edit category';
+    res.render('cat_edit', {title, catDetails});
 };
 
 const processEditCatForm = async (req,res) => {
-    const { categoryId,name } = req.body;
+    const Id = req.params.id;
+    const { categoryName } = req.body;
     // always remember to name the variables TO the names within the BODY of the html
     
-    // testing for the date and if it ACTUALLY gets collected or not
-    console.log("Request body:", req.body);
-    //console.log("Submitted date:", req.body?.date);
+    // testing for the category_id and category_name and if it ACTUALLY gets collected or not
+    //console.log("Request body:", req.body);
 
     // Check for validation errors
     const results = validationResult(req);
@@ -107,11 +107,11 @@ const processEditCatForm = async (req,res) => {
         });
 
         // Redirect back to the new organization form
-        return res.redirect(`/edit_category`);
+        return res.redirect(`/edit_categories`);
     }
 
-    await updateCategory(Id,name);
-    req.flash('success', 'Project Edited successfully!');
+    await editCategory(Id, categoryName);
+    req.flash('success', 'Category Edited successfully!');
     res.redirect(`/category/${categoryId}`);
 };
 
@@ -136,4 +136,4 @@ const categoryValidation = [
         .isInt().withMessage('Organization must be a valid integer')
 ];
 
-export {categoryPage, getCategoriesByProjectId, showCatDetailsPage, showAssignCatForm, processAssignCatForm, showNewCatForm, processNewCatForm};
+export {categoryPage, getCategoriesByProjectId, showCatDetailsPage, showAssignCatForm, processAssignCatForm, showNewCatForm, processNewCatForm, showEditCatForm, processEditCatForm};
