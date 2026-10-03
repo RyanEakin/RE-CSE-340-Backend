@@ -2,7 +2,7 @@ import { body, validationResult } from 'express-validator';
 
 import { getCategoriesByProjectId} from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
-import { getAllProjects, getProjectsByOrganizationId, getProjectDetails, getUpcomingProjects, createProject } from '../models/projects.js';
+import { getAllProjects, getProjectsByOrganizationId, getProjectDetails, getUpcomingProjects, createProject, updateProject } from '../models/projects.js';
 
 const projectPage = async (req, res) => {
     const project_num = 5;
@@ -58,6 +58,36 @@ const processNewProjForm = async (req, res) => {
     }
 }
 
+const showEditProjForm = async (req,res) => {
+    const projectId = req.params.id;
+    const projDetails = await getProjectDetails(projectId);
+    const orgDetails = await getAllOrganizations();
+
+    const title = 'Edit Project';
+    res.render('proj_edit', {title, projDetails, orgDetails});
+};
+
+const processEditProjForm = async (req,res) => {
+    const projectId = req.params.id;
+    const { organization_id, title, description, location, project_date } = req.body;
+    
+    // Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new organization form
+        return res.redirect(`/edit_project/${organizationId}`);
+    }
+
+    await updateProject(projectId, organization_id, title, description, location, project_date);
+    req.flash('success', 'Organization Edited successfully!');
+    res.redirect(`/project/${projectId}`);
+};
+
 const projectValidation = [
     body('title')
         .trim()
@@ -79,4 +109,4 @@ const projectValidation = [
         .isInt().withMessage('Organization must be a valid integer')
 ];
 
-export {projectPage, showProjDetailsPage, showNewProjForm, processNewProjForm, projectValidation};
+export {projectPage, showProjDetailsPage, showNewProjForm, processNewProjForm, projectValidation, processEditProjForm, showEditProjForm};

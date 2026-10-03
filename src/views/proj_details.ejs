@@ -7,14 +7,16 @@
     <a href="/organization/<%= project.organization_id %>">Back to <%= project.name %></a>
 <% }); %>
 
+
+
 <br>Tags:
 <% catDetails.forEach(category => { %>
     <li><a href="/category/<%= category.category_id %>"> <%= category.category_name %></a></li>
 <% }); %>
 _________________________ <br>
-<% projDetails.forEach(project => { %>
-    <a href="/assign_category/<%= project.project_id %>">Edit Categories</a>
-<% }); %>
+<a href="/assign_category/<%= projDetails[0].project_id %>">Edit Categories</a>
+
+<a href="/edit_project/<%= projDetails[0].project_id%>">Edit Project</a>
 </ul>
 
     </main>
