@@ -31,7 +31,7 @@ const showNewProjForm = async (req, res) => {
 
 const processNewProjForm = async (req, res) => {
     // Extract form data from req.body
-    const { title, description, location, project_date, organizationId } = req.body;
+    const { title, description, location, date, organizationId } = req.body;
 
         // Check for validation errors
     const errors = validationResult(req);
@@ -47,7 +47,7 @@ const processNewProjForm = async (req, res) => {
 
     try {
         // Create the new project in the database
-        const newProjectId = await createProject(title, description, location, project_date, organizationId);
+        const newProjectId = await createProject(title, description, location, date, organizationId);
 
         req.flash('success', 'New service project created successfully!');
         res.redirect(`/project/${newProjectId}`);
@@ -69,8 +69,12 @@ const showEditProjForm = async (req,res) => {
 
 const processEditProjForm = async (req,res) => {
     const projectId = req.params.id;
-    const { organization_id, title, description, location, project_date } = req.body;
+    const { organization_id, title, description, location, date } = req.body;
     
+    // testing for the date and if it ACTUALLY gets collected or not
+    //console.log("Request body:", req.body);
+    //console.log("Submitted date:", req.body?.date);
+
     // Check for validation errors
     const results = validationResult(req);
     if (!results.isEmpty()) {
@@ -83,7 +87,7 @@ const processEditProjForm = async (req,res) => {
         return res.redirect(`/edit_project/${organizationId}`);
     }
 
-    await updateProject(projectId, organization_id, title, description, location, project_date);
+    await updateProject(projectId, organization_id, title, description, location, date);
     req.flash('success', 'Organization Edited successfully!');
     res.redirect(`/project/${projectId}`);
 };
