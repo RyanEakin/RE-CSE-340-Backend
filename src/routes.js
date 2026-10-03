@@ -36,8 +36,8 @@ router.post('/edit_organization/:id', organizationValidation, processEditOrgForm
 router.get('/new_project', showNewProjForm);
 router.post('/new_project', projectValidation, processNewProjForm);
 
-router.get('/cat_assign/:projectId', showAssignCatForm);
-router.post('/cat_assign/:projectId', processAssignCatForm);
+router.get('/assign_categories/:projectId', showAssignCatForm);
+router.post('/assign_categories/:projectId', processAssignCatForm);
 
 router.get('/test-error',servError);
 
