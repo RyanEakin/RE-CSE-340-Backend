@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+<main>
+    <h1><%= projectDetails[0].title %></h1>
+    <!--why no work?! projectDetails IS being passed through!?-->
+    <!--figured it out, had to add '[0]' due to projectDetails containing MULTIPLE entries apprently-->
+
+    <h2>Assign Categories</h2>
+ <form action="/cat_assign/<%= projectId %>" method="POST">
+
+    <div class="form-group">
+      <% categories.forEach(category => { %>
+        <div>
+          <input
+            type="checkbox"
+            id="category-<%= category.category_id %>"
+            name="categoryIds"
+            value="<%= category.category_id %>"
+            <%= assignedCategories.some(ac => ac.category_id === category.category_id) ? 'checked' : '' %>
+          />
+          <label for="category-<%= category.category_id %>"><%= category.category_name %></label>
+          <!--why NO Name?! what is going on?!-->
+          <!--remembered that I used category_name, not just name for the column name-->
+        </div>
+      <% }); %>
+    </div>
+
+    <button type="submit">Update Categories</button>
+
+</main>
+<%- include('partials/footer') %>

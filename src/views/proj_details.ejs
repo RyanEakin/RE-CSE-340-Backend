@@ -11,7 +11,10 @@
 <% catDetails.forEach(category => { %>
     <li><a href="/category/<%= category.category_id %>"> <%= category.category_name %></a></li>
 <% }); %>
-
+_________________________ <br>
+<% projDetails.forEach(project => { %>
+    <a href="/cat_assign/<%= project.project_id %>">Edit Categories</a>
+<% }); %>
 </ul>
 
     </main>
