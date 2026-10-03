@@ -38,7 +38,7 @@ const app = express();
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
-  saveUnitialized: true,
+  saveUninitialized: true,
   cookie: {maxAge: 60 * 60 * 1000 } // Session expires in 1 hour of inactivity
 }))
 
