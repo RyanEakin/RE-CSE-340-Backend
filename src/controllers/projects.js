@@ -2,7 +2,7 @@ import { body, validationResult } from 'express-validator';
 
 import { getCategoriesByProjectId} from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
-import { getAllProjects, getProjectsByOrganizationId, getProjectDetails, getUpcomingProjects, createProject } from '../models/projects.js';
+import { getAllProjects, getProjectsByOrganizationId, getProjectDetails, getUpcomingProjects, createProject, updateProject } from '../models/projects.js';
 
 const projectPage = async (req, res) => {
     const project_num = 5;
@@ -31,7 +31,7 @@ const showNewProjForm = async (req, res) => {
 
 const processNewProjForm = async (req, res) => {
     // Extract form data from req.body
-    const { title, description, location, project_date, organizationId } = req.body;
+    const { title, description, location, date, organizationId } = req.body;
 
         // Check for validation errors
     const errors = validationResult(req);
@@ -47,7 +47,7 @@ const processNewProjForm = async (req, res) => {
 
     try {
         // Create the new project in the database
-        const newProjectId = await createProject(title, description, location, project_date, organizationId);
+        const newProjectId = await createProject(title, description, location, date, organizationId);
 
         req.flash('success', 'New service project created successfully!');
         res.redirect(`/project/${newProjectId}`);
@@ -57,6 +57,41 @@ const processNewProjForm = async (req, res) => {
         res.redirect('/new_project');
     }
 }
+
+const showEditProjForm = async (req,res) => {
+    const projectId = req.params.id;
+    const projDetails = await getProjectDetails(projectId);
+    const orgDetails = await getAllOrganizations();
+
+    const title = 'Edit Project';
+    res.render('proj_edit', {title, projDetails, orgDetails});
+};
+
+const processEditProjForm = async (req,res) => {
+    const projectId = req.params.id;
+    const { organizationId, title, description, location, date } = req.body;
+    // always remember to name the variables TO the names within the BODY of the html
+    
+    // testing for the date and if it ACTUALLY gets collected or not
+    console.log("Request body:", req.body);
+    //console.log("Submitted date:", req.body?.date);
+
+    // Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new organization form
+        return res.redirect(`/edit_project/${organizationId}`);
+    }
+
+    await updateProject(organizationId, title, description, location, date, projectId);
+    req.flash('success', 'Organization Edited successfully!');
+    res.redirect(`/project/${projectId}`);
+};
 
 const projectValidation = [
     body('title')
@@ -79,4 +114,4 @@ const projectValidation = [
         .isInt().withMessage('Organization must be a valid integer')
 ];
 
-export {projectPage, showProjDetailsPage, showNewProjForm, processNewProjForm, projectValidation};
+export {projectPage, showProjDetailsPage, showNewProjForm, processNewProjForm, projectValidation, processEditProjForm, showEditProjForm};
