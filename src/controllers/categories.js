@@ -112,28 +112,18 @@ const processEditCatForm = async (req,res) => {
 
     await editCategory(Id, categoryName);
     req.flash('success', 'Category Edited successfully!');
-    res.redirect(`/category/${categoryId}`);
+    res.redirect(`/category/${Id}`);
 };
 
 const categoryValidation = [
-    body('title')
+    body('Id')
         .trim()
         .notEmpty().withMessage('Title is required')
         .isLength({ min: 3, max: 200 }).withMessage('Title must be between 3 and 200 characters'),
-    body('description')
+    body('categoryName')
         .trim()
         .notEmpty().withMessage('Description is required')
         .isLength({ max: 1000 }).withMessage('Description must be less than 1000 characters'),
-    body('location')
-        .trim()
-        .notEmpty().withMessage('Location is required')
-        .isLength({ max: 200 }).withMessage('Location must be less than 200 characters'),
-    body('date')
-        .notEmpty().withMessage('Date is required')
-        .isISO8601().withMessage('Date must be a valid date format'),
-    body('organizationId')
-        .notEmpty().withMessage('Organization is required')
-        .isInt().withMessage('Organization must be a valid integer')
 ];
 
 export {categoryPage, getCategoriesByProjectId, showCatDetailsPage, showAssignCatForm, processAssignCatForm, showNewCatForm, processNewCatForm, showEditCatForm, processEditCatForm};

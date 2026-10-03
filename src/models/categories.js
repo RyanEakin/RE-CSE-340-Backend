@@ -113,30 +113,29 @@ const createCategory = async (name) => {
     return result.rows[0].category_id;
 };
 
-const editCategory = async(Id,name) => {
-  try{
-  const query = `
-    UPDATE category
-    SET category_name = $2
-    WHERE category_id = $1
-    RETURNING category_id;
-  `;
+const editCategory = async (id, name) => {
+  try {
+    const query = `
+      UPDATE category
+      SET category_name = $2
+      WHERE category_id = $1
+      RETURNING category_id;
+    `;
 
-  const queryParams = [Id,name];
-  const result = await db.query(query, queryParams);
+    const result = await db.query(query, [id, name]);
 
-  //console.log(queryParams);
-  console.log(result.rows.length);
+    if (result.rows.length === 0) {
+      throw new Error("Category not found");
+    }
 
-  if (result.rows.length  === 0) {
-    throw new Error("Category not found")
-  }
-  if (process.env.ENABLE_SQL_LOGGING === 'true') {
-    console.log(`Updated project with ID: ${category_id}`);
-  }
-  }
-  catch {
-    throw new Error("Database Connection not Available/Rejected")
+    if (process.env.ENABLE_SQL_LOGGING === "true") {
+      console.log(`Updated category with ID: ${id}`);
+    }
+
+    return result.rows[0];
+  } catch (error) {
+    console.error("Actual editCategory error:", error);
+    throw error;
   }
 };
 
