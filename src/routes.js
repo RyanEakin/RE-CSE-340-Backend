@@ -40,7 +40,7 @@ router.get('/assign_categories/:projectId', showAssignCatForm);
 router.post('/assign_categories/:projectId', processAssignCatForm);
 
 router.get('/edit_project/:id', showEditProjForm);
-router.post('/edit_project/:id', processEditProjForm);
+router.post('/edit_project/:id', projectValidation, processEditProjForm);
 
 //router.get('',);
 //router.post('',);

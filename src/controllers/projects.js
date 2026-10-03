@@ -69,10 +69,11 @@ const showEditProjForm = async (req,res) => {
 
 const processEditProjForm = async (req,res) => {
     const projectId = req.params.id;
-    const { organization_id, title, description, location, date } = req.body;
+    const { organizationId, title, description, location, date } = req.body;
+    // always remember to name the variables TO the names within the BODY of the html
     
     // testing for the date and if it ACTUALLY gets collected or not
-    //console.log("Request body:", req.body);
+    console.log("Request body:", req.body);
     //console.log("Submitted date:", req.body?.date);
 
     // Check for validation errors
@@ -87,7 +88,7 @@ const processEditProjForm = async (req,res) => {
         return res.redirect(`/edit_project/${organizationId}`);
     }
 
-    await updateProject(projectId, organization_id, title, description, location, date);
+    await updateProject(organizationId, title, description, location, date, projectId);
     req.flash('success', 'Organization Edited successfully!');
     res.redirect(`/project/${projectId}`);
 };

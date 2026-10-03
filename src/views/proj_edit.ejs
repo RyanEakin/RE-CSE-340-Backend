@@ -50,16 +50,20 @@
 
     <div class="form-group">
       <label for="organizationId">Organization</label>
-      <select
-        id="organizationId"
-        name="organizationId"
-        required
+
+  <select id="organizationId" name="organizationId" required>
+    <option value="" disabled>Select an organization</option>
+
+    <% orgDetails.forEach(org => { %>
+      <option value="<%= org.organization_id %>"
+        <%= org.organization_id === projDetails[0].organization_id
+              ? "selected"
+              : "" %>
       >
-        <option value="<%= orgDetails.organization_id %>" selected>Select an organization</option>
-        <% orgDetails.forEach(org => { %>
-          <option value="<%=  org.organization_id %>"><%=  org.name %></option>
-        <% }); %>
-      </select>
+        <%= org.name %>
+      </option>
+    <% }); %>
+  </select>
     </div>
 
     <button type="submit">Edit Project</button>

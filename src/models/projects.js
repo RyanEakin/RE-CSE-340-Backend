@@ -114,7 +114,7 @@ const createProject = async (title, description, location, date, organizationId)
     return result.rows[0].project_id;
 };
 
-const updateProject = async(project_id, organization_id, title, description, location, project_date) => {
+const updateProject = async(organization_id, title, description, location, date, project_id) => {
   try{
   const query = `
     UPDATE projects
@@ -128,8 +128,24 @@ const updateProject = async(project_id, organization_id, title, description, loc
     RETURNING project_id;
   `;
 
+    /**
+   * apparently
+   * $1 = project_id
+   * $2 = Null?... how? it is suppposed to be organization_id
+   * $3 = title: public challenge
+   * $4 = description
+   * $5 = location?!
+   * $6 = Date?!
+   * SOMEHOW?!
+   * 
+   * found out how, blame controller for WRONG inputs
+   */
+
   const queryParams = [organization_id, title, description, location, date, project_id];
   const result = await db.query(query, queryParams);
+
+  console.log(queryParams);
+  console.log(result);
 
   if (result.rows.length  === 0) {
     throw new Error("Project not found")
