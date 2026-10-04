@@ -107,7 +107,7 @@ const processEditCatForm = async (req,res) => {
         });
 
         // Redirect back to the new organization form
-        return res.redirect(`/edit_categories`);
+        return res.redirect(`/edit_categories/${Id}`);
     }
 
     await editCategory(Id, categoryName);
