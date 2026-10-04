@@ -43,9 +43,10 @@ router.get('/edit_project/:id', showEditProjForm);
 router.post('/edit_project/:id', projectValidation, processEditProjForm);
 
 router.get('/new_categories',showNewCatForm);
-router.post('/new_categories',processNewCatForm);
+router.post('/new_categories', categoryValidation, processNewCatForm);
+// remember to add the validator TO the POST methods!
 
-router.get('/edit_categories/:id',showEditCatForm);
+router.get('/edit_categories/:id', showEditCatForm);
 router.post('/edit_categories/:id', categoryValidation, processEditCatForm);
 
 //router.get('',);
