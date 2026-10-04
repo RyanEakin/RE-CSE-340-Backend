@@ -116,14 +116,12 @@ const processEditCatForm = async (req,res) => {
 };
 
 const categoryValidation = [
-    body('Id')
-        .trim()
-        .notEmpty().withMessage('Title is required')
-        .isLength({ min: 3, max: 200 }).withMessage('Title must be between 3 and 200 characters'),
     body('categoryName')
         .trim()
-        .notEmpty().withMessage('Description is required')
-        .isLength({ max: 1000 }).withMessage('Description must be less than 1000 characters'),
+        .notEmpty()
+        .withMessage('Category name is required')
+        .isLength({ min: 3, max: 100 })
+        .withMessage('Category name must be between 3 and 100 characters')
 ];
 
-export {categoryPage, getCategoriesByProjectId, showCatDetailsPage, showAssignCatForm, processAssignCatForm, showNewCatForm, processNewCatForm, showEditCatForm, processEditCatForm};
+export {categoryPage, getCategoriesByProjectId, showCatDetailsPage, showAssignCatForm, processAssignCatForm, showNewCatForm, processNewCatForm, showEditCatForm, processEditCatForm, categoryValidation};
