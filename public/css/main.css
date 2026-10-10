@@ -353,3 +353,23 @@ footer p {
     background-color: #d1ecf1;
     border-color: #bee5eb;
 }
+
+/*Table Styling*/
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:first-child {
+  background-color: #dddddd;
+}
+
+/*borrowed table rules from w3schools.com table exercise, though modified nth-child(even) to be first-child instead.*/
