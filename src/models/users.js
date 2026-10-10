@@ -73,6 +73,7 @@ const getUserDetails = async () => {
     SELECT u.user_id, u.name, u.email, r.role_name 
     FROM users u
     JOIN roles r ON u.role_id = r.role_id
+    ORDER BY u.user_id
     `;
 
     const result = await db.query(query);
