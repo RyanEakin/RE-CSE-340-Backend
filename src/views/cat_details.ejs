@@ -6,7 +6,9 @@
     <!--<a href="/organization/<%= project.organization_id %>">Back to <%= project.name %></a>-->
 <% }); %>
 _________________________________________________________________________
-<br><a href="/edit_categories/<%=catDetails.category_id%>"><strong>Edit Category</strong></a>
+<% if (user && user.role_name === 'admin') { %>
+    <br><a href="/edit_categories/<%=catDetails.category_id%>"><strong>Edit Category</strong></a>
+<% } %>
     <!--
     <p>Environmental</p>
     <p>Education</p>

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout, showDashboard, requireCred } from './controllers/users.js';
+import { ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout, showDashboard, requireCred, requirePerm } from './controllers/users.js';
 
 import { indexPage } from '../src/controllers/index.js';
 
@@ -18,6 +18,10 @@ const router = express.Router();
  * Routes
  */
 
+///////////////////////////////////////////
+//       Publicly Available Pages        //
+///////////////////////////////////////////
+
 router.get('/', indexPage);
 
 router.get('/organizations', orgPage);
@@ -29,27 +33,43 @@ router.get('/project/:id',showProjDetailsPage);
 router.get('/categories',categoryPage);
 router.get('/category/:id',showCatDetailsPage);
 
-router.get('/new_organization', displayOrganizationForm);
-router.post('/new_organization', organizationValidation, processOrganizationForm);
+///////////////////////////////////////////
+//          Organization Pages           //
+///////////////////////////////////////////
 
-router.get('/edit_organization/:id', showEditOrgForm);
-router.post('/edit_organization/:id', organizationValidation, processEditOrgForm);
+router.get('/new_organization', requirePerm('admin'), displayOrganizationForm);
+router.post('/new_organization', requirePerm('admin'), organizationValidation, processOrganizationForm);
 
-router.get('/new_project', showNewProjForm);
-router.post('/new_project', projectValidation, processNewProjForm);
+router.get('/edit_organization/:id', requirePerm('admin'), showEditOrgForm);
+router.post('/edit_organization/:id', requirePerm('admin'), organizationValidation, processEditOrgForm);
 
-router.get('/assign_categories/:projectId', showAssignCatForm);
-router.post('/assign_categories/:projectId', processAssignCatForm);
+///////////////////////////////////////////
+//             Project Pages             //
+///////////////////////////////////////////
 
-router.get('/edit_project/:id', showEditProjForm);
-router.post('/edit_project/:id', projectValidation, processEditProjForm);
+router.get('/new_project', requirePerm('admin'), showNewProjForm);
+router.post('/new_project', requirePerm('admin'), projectValidation, processNewProjForm);
 
-router.get('/new_categories',showNewCatForm);
-router.post('/new_categories', categoryValidation, processNewCatForm);
+router.get('/edit_project/:id', requirePerm('admin'), showEditProjForm);
+router.post('/edit_project/:id', requirePerm('admin'), projectValidation, processEditProjForm);
+
+///////////////////////////////////////////
+//            Category Pages             //
+///////////////////////////////////////////
+
+router.get('/assign_categories/:projectId', requirePerm('admin'), showAssignCatForm);
+router.post('/assign_categories/:projectId', requirePerm('admin'), processAssignCatForm);
+
+router.get('/new_categories', requirePerm('admin'), showNewCatForm);
+router.post('/new_categories', requirePerm('admin'), categoryValidation, processNewCatForm);
 // remember to add the validator TO the POST methods!
 
-router.get('/edit_categories/:id', showEditCatForm);
-router.post('/edit_categories/:id', categoryValidation, processEditCatForm);
+router.get('/edit_categories/:id', requirePerm('admin'), showEditCatForm);
+router.post('/edit_categories/:id', requirePerm('admin'), categoryValidation, processEditCatForm);
+
+///////////////////////////////////////////
+//             Account Pages             //
+///////////////////////////////////////////
 
 router.get('/register',ShowUserRegForm);
 router.post('/register', regValidation, ProcessUserRegForm);
