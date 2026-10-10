@@ -70,12 +70,15 @@ app.set('views', path.join(__dirname, 'src/views'));
 //         Developer-Mode setup          //
 ///////////////////////////////////////////
 
-// Middleware to log all incoming requests
+// Middleware to log all incoming requests and manage log-ins
 app.use((req, res, next) => {
-    if (NODE_ENV === 'development') {
-        console.log(`${req.method} ${req.url}`);
+    res.locals.isLoggedIn = false;
+    if (req.session && req.session.user) {
+        res.locals.isLoggedIn = true;
     }
-    next(); // Pass control to the next middleware or route
+
+    res.locals.NODE_ENV = NODE_ENV;
+    next();
 });
 
 // Middleware to make NODE_ENV available to all templates
