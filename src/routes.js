@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout } from './controllers/users.js';
+import { ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout, showDashboard, requireCred } from './controllers/users.js';
 
 import { indexPage } from '../src/controllers/index.js';
 
@@ -59,6 +59,8 @@ router.get('/login', showLogin);
 router.post('/login', userValidation, processLogin);
 // made a SEPARATE validation layer DUE to the fact that user validation has LESS values
 router.get('/logout', processLogout);
+
+router.get('/dashboard', requireCred, showDashboard);
 
 
 //router.get('',);

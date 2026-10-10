@@ -72,10 +72,10 @@ const processLogin = async(req,res) => {
             req.flash('success', 'User logged in successfully!');
 
             if (res.locals.NODE_ENV === 'development') {
-                console.log('User logged in:', UserId);
+                console.log('User logged in:', UserId.name);
             }
 
-            res.redirect(`/`);
+            res.redirect('/dashboard');
         }
         else{
             req.flash('error', 'Invalid email or password.')
@@ -94,7 +94,7 @@ const processLogout = async(req,res) => {
     try {
         // logout user from site
         if(req.session.user){
-            req.session.destroy();
+            delete req.session.user;
         }
 
         req.flash('success', 'User logged out successfully!');
@@ -105,6 +105,28 @@ const processLogout = async(req,res) => {
         req.flash('error', 'There was an error logging out of the Account. Please try again');
         res.redirect('/login');
     }
+};
+
+
+const requireCred = async(req, res, next) => {
+    // use this to prevent 'go back a page' info leak from recently logged out accounts
+    res.set('Cache-Control', 'no-store'); 
+
+    if (!req.session.user || !req.session) { // position is important, deny first, THEN allow. else it crashes
+        req.flash('error','Invalid Credentials for action');
+        res.redirect('/login');
+    }
+    else{
+        next();
+    }
+};
+
+const showDashboard = async(req,res) => {
+    const user = req.session.user;
+
+    //console.log(user.name);
+
+    res.render('dashboard', {title: 'Dashboard', name: user.name, email: user.email});
 };
 
 const regValidation = [
@@ -143,4 +165,4 @@ const userValidation = [
         .withMessage('Password must be between 3 and 150 characters'),
 ];
 
-export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout}
+export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, showDashboard, showLogin, processLogin, processLogout}

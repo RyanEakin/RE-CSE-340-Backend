@@ -59,7 +59,7 @@ const authenticateUser = async (email, password) => {
     const auth = await verifyPassword(password, user.password_hash);
 
     if (auth === true){
-        return user.name;
+        return user;
     }
     else {
         return null;
