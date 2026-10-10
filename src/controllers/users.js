@@ -11,6 +11,9 @@ const ShowUserRegForm = async(req,res) => {
 const ProcessUserRegForm = async(req,res) => {
     const {name, email, password} = req.body;
 
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
         // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -49,6 +52,9 @@ const showLogin = async(req,res) => {
 
 const processLogin = async(req,res) => {
     const {email, password} = req.body;
+    
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
 
         // Check for validation errors
     const errors = validationResult(req);
@@ -94,6 +100,8 @@ const processLogout = async(req,res) => {
     try {
         // logout user from site
         if(req.session.user){
+        res.set('Cache-Control', 'no-store');
+        // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
             delete req.session.user;
         }
 
@@ -109,8 +117,6 @@ const processLogout = async(req,res) => {
 
 
 const requireCred = async(req, res, next) => {
-    // use this to prevent 'go back a page' info leak from recently logged out accounts
-    res.set('Cache-Control', 'no-store'); 
 
     if (!req.session.user || !req.session) { // position is important, deny first, THEN allow. else it crashes
         req.flash('error','An Account is needed for this for action');
@@ -143,7 +149,9 @@ const requirePerm = (role) => {
 
 const showDashboard = async(req,res) => {
     const user = req.session.user;
-
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+    
     //console.log(user.name);
 
     res.render('dashboard', {title: 'Dashboard', name: user.role_name, email: user.email});
@@ -152,6 +160,10 @@ const showDashboard = async(req,res) => {
 
 const showMngemntDashboard = async(req,res) => {
     // gotta remember that req comes first, THEN res.
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     const userDetails = await getUserDetails();
     const title = 'User Management';
 

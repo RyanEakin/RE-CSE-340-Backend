@@ -26,6 +26,9 @@ const showCatDetailsPage = async (req,res) => {
 const showAssignCatForm = async (req, res) => {
     const projectId = req.params.projectId;
 
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     const projectDetails = await getProjectDetails(projectId);
     const categories = await getAllCategories();
     const assignedCategories = await getCategoriesByProjectId(projectId);
@@ -39,6 +42,9 @@ const processAssignCatForm = async (req, res) => {
     const projectId = req.params.projectId;
     const selectedCategoryIds = req.body.categoryIds || [];
     
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     // Ensure selectedCategoryIds is an array
     const categoryIdsArray = Array.isArray(selectedCategoryIds) ? selectedCategoryIds : [selectedCategoryIds];
     await updateCategoryAssignments(projectId, categoryIdsArray);
@@ -50,12 +56,18 @@ const showNewCatForm = async (req, res) => {
     const catDetails = await getAllCategories();
     const title = 'Add New Categories';
 
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     res.render('new_categories', { title, catDetails });
 }
 
 const processNewCatForm = async (req, res) => {
     // Extract form data from req.body
     const { categoryName} = req.body;
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
 
         // Check for validation errors
     const errors = validationResult(req);
@@ -86,6 +98,9 @@ const showEditCatForm = async (req,res) => {
     const categoryId = req.params.id;
     const catDetails = await getCategoryById(categoryId);
 
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     const title = 'Edit category';
     res.render('cat_edit', {title, catDetails});
 };
@@ -94,6 +109,9 @@ const processEditCatForm = async (req,res) => {
     const Id = req.params.id;
     const { categoryName } = req.body;
     // always remember to name the variables TO the names within the BODY of the html
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
     
     // testing for the category_id and category_name and if it ACTUALLY gets collected or not
     //console.log("Request body:", req.body);

@@ -45,16 +45,19 @@ const showOrgDetailsPage = async (req, res) => {
 };
 
 const displayOrganizationForm = async (requestAnimationFrame,res) => {
-  const title = 'Add New Organization';
+    const title = 'Add New Organization';
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
 
-  res.render('new_organization', {title});
+    res.render('new_organization', {title});
 };
 
 const processOrganizationForm = async (req, res) => {
-
-
     const { name, description, contactEmail } = req.body;
     const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
 
     const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
     req.flash('success', 'Organization added successfully!');
@@ -65,6 +68,9 @@ const showEditOrgForm = async (req, res) => {
     const organizationId = req.params.id;
     const organizationDetails = await getOrganizationDetails(organizationId);
 
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     const title = 'Edit Organization';
     res.render('org_edit', { title, organizationDetails });
 };
@@ -72,6 +78,9 @@ const showEditOrgForm = async (req, res) => {
 const processEditOrgForm = async (req, res) => {
     const organizationId = req.params.id;
     const { name, description, contactEmail, logoFilename } = req.body;
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
 
     // Check for validation errors
     const results = validationResult(req);
