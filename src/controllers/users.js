@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
-import {createUser, authenticateUser} from '../models/users.js';
+import {createUser, authenticateUser, getUserDetails} from '../models/users.js';
 
 const ShowUserRegForm = async(req,res) => {
     const title = 'New User Registration';
@@ -72,7 +72,7 @@ const processLogin = async(req,res) => {
             req.flash('success', 'User logged in successfully!');
 
             if (res.locals.NODE_ENV === 'development') {
-                console.log('User logged in:', UserId.name);
+                console.log('User logged in:', UserId.role_name);
             }
 
             res.redirect('/dashboard');
@@ -123,8 +123,6 @@ const requireCred = async(req, res, next) => {
 
 const requirePerm = (role) => {
     return (req, res, next) => {
-        // use this to prevent 'go back a page' info leak from recently logged out accounts
-        res.set('Cache-Control', 'no-store'); 
 
         // Check if user is logged in first
         if (!req.session || !req.session.user) {
@@ -148,7 +146,18 @@ const showDashboard = async(req,res) => {
 
     //console.log(user.name);
 
-    res.render('dashboard', {title: 'Dashboard', name: user.name, email: user.email});
+    res.render('dashboard', {title: 'Dashboard', name: user.role_name, email: user.email});
+    // had to change user.name to user.role_name for this line to work
+};
+
+const showMngemntDashboard = async(req,res) => {
+    // gotta remember that req comes first, THEN res.
+    const userDetails = await getUserDetails();
+    const title = 'User Management';
+
+    //console.log(userDetails);
+
+    res.render('user_management',{title, userDetails});
 };
 
 const regValidation = [
@@ -187,4 +196,4 @@ const userValidation = [
         .withMessage('Password must be between 3 and 150 characters'),
 ];
 
-export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, requirePerm, showDashboard, showLogin, processLogin, processLogout}
+export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, requirePerm, showDashboard, showMngemntDashboard, showLogin, processLogin, processLogout}
