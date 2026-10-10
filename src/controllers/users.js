@@ -113,12 +113,34 @@ const requireCred = async(req, res, next) => {
     res.set('Cache-Control', 'no-store'); 
 
     if (!req.session.user || !req.session) { // position is important, deny first, THEN allow. else it crashes
-        req.flash('error','Invalid Credentials for action');
+        req.flash('error','An Account is needed for this for action');
         res.redirect('/login');
     }
     else{
         next();
     }
+};
+
+const requirePerm = (role) => {
+    return (req, res, next) => {
+        // use this to prevent 'go back a page' info leak from recently logged out accounts
+        res.set('Cache-Control', 'no-store'); 
+
+        // Check if user is logged in first
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access this page.');
+            return res.redirect('/login');
+        }
+
+        // Check if user's role matches the required role
+        if (req.session.user.role_name !== role) {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/');
+        }
+
+        // User has required role, continue
+        next();
+    };
 };
 
 const showDashboard = async(req,res) => {
@@ -165,4 +187,4 @@ const userValidation = [
         .withMessage('Password must be between 3 and 150 characters'),
 ];
 
-export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, showDashboard, showLogin, processLogin, processLogout}
+export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, requirePerm, showDashboard, showLogin, processLogin, processLogout}

@@ -14,9 +14,11 @@
     <li><a href="/category/<%= category.category_id %>"> <%= category.category_name %></a></li>
 <% }); %>
 <br>_________________________ <br>
-<a href="/assign_categories/<%= projDetails[0].project_id %>">Edit Categories</a>
+<% if (user && user.role_name === 'admin') { %>
+    <a href="/assign_categories/<%= projDetails[0].project_id %>">Edit Categories</a>
 
-<a href="/edit_project/<%= projDetails[0].project_id%>">Edit Project</a>
+    <a href="/edit_project/<%= projDetails[0].project_id%>">Edit Project</a>
+<% } %>
 </ul>
 
     </main>
