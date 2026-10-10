@@ -70,7 +70,7 @@ const authenticateUser = async (email, password) => {
 //created this function due to a lack of any other function that did the SAME, without needing their email BEFOREHAND.
 const getUserDetails = async () => {
     const query = `
-    SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name 
+    SELECT u.user_id, u.name, u.email, r.role_name 
     FROM users u
     JOIN roles r ON u.role_id = r.role_id
     `;
