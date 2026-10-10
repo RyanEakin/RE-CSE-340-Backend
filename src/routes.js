@@ -1,5 +1,7 @@
 import express from 'express';
 
+import { ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout, showDashboard, requireCred } from './controllers/users.js';
+
 import { indexPage } from '../src/controllers/index.js';
 
 import { orgPage, showOrgDetailsPage, displayOrganizationForm, processOrganizationForm ,organizationValidation,showEditOrgForm, processEditOrgForm } from '../src/controllers/organizations.js';
@@ -48,6 +50,18 @@ router.post('/new_categories', categoryValidation, processNewCatForm);
 
 router.get('/edit_categories/:id', showEditCatForm);
 router.post('/edit_categories/:id', categoryValidation, processEditCatForm);
+
+router.get('/register',ShowUserRegForm);
+router.post('/register', regValidation, ProcessUserRegForm);
+// made registration validation for when new users are created
+
+router.get('/login', showLogin);
+router.post('/login', userValidation, processLogin);
+// made a SEPARATE validation layer DUE to the fact that user validation has LESS values
+router.get('/logout', processLogout);
+
+router.get('/dashboard', requireCred, showDashboard);
+
 
 //router.get('',);
 //router.post('',);
