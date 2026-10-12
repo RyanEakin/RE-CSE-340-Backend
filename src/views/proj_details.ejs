@@ -5,6 +5,10 @@
 <% projDetails.forEach(project => { %>
     <p><strong><%= project.title %></strong>: <%= project.description %> <br> <strong>Date:</strong> <%= project.project_date %> ; <strong>Location:</strong> <%= project.location %></p>
     <a href="/organization/<%= project.organization_id %>">Back to <%= project.name %></a>
+    <% if (isLoggedIn) { %>
+        <br>
+    <a href="/volunteer/<%= project.project_id %>">Volunteer for <%= project.title %></a>
+    <% } %>
 <% }); %>
 
 

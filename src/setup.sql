@@ -219,7 +219,8 @@ CREATE TABLE users (
 -- Insert sample data: users
 -- ========================================
 INSERT INTO users (name, email, password_hash, role_id) 
-VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1);
+VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1),
+        ('admin', 'admin@example.com', 'placeholder_hash', 1);
 
 
 

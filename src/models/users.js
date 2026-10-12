@@ -82,4 +82,50 @@ const getUserDetails = async () => {
 };
 
 
-export { createUser, authenticateUser, getUserDetails };
+//========================================//
+//         Volunteering functions         //
+//========================================//
+
+
+const assignVolunteer = async(userId, projectId) => {
+    const query = `
+        INSERT INTO volunteers (user_id, project_id)
+        VALUES ($1, $2);
+    `;
+
+    await db.query(query, [userId, projectId]);
+};
+
+const listProjByUserId = async(userId) => {
+    const query = `
+      SELECT 
+        p.project_id,
+        p.title,
+        p.description,
+        p.location,
+        p.project_date,
+        p.organization_id
+      FROM public.projects AS p 
+      INNER JOIN public.volunteers AS v 
+      ON p.project_id = v.project_id
+      INNER JOIN public.users AS u 
+      ON u.user_id = v.user_id
+      WHERE u.user_id = $1;
+    `;
+
+    const queryParam = [project_id];
+    const result = await db.query(query, queryParam);
+
+    return result.rows;
+};
+
+const removeVolunteer = async(userId,projectId) => {
+    const deleteQuery = `
+        DELETE FROM volunteers
+        WHERE user_id = $1 AND project_id = $2;
+    `;
+    await db.query(deleteQuery, [userId,projectId]);
+};
+
+
+export { createUser, authenticateUser, getUserDetails, assignVolunteer, listProjByUserId, removeVolunteer };
