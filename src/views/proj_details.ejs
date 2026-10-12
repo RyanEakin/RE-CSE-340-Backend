@@ -5,12 +5,16 @@
 <% projDetails.forEach(project => { %>
     <p><strong><%= project.title %></strong>: <%= project.description %> <br> <strong>Date:</strong> <%= project.project_date %> ; <strong>Location:</strong> <%= project.location %></p>
     <a href="/organization/<%= project.organization_id %>">Back to <%= project.name %></a>
-    <% if (isLoggedIn) { %>
-        <br>
-    <a href="/volunteer/<%= project.project_id %>">Volunteer for <%= project.title %></a>
-    <% } %>
+
 <% }); %>
 
+<br>
+
+<% if (isLoggedIn && volunDetails.project_id !== projDetails[0].project_id) { %>
+    <a href="/volunteer/<%= projDetails[0].project_id %>">Volunteer for <%= projDetails[0].title %></a>
+<% } else if (isLoggedIn && volunDetails.project_id === projDetails[0].project_id) { %>
+    <a href="/opt_out/<%= projDetails[0].project_id %>">You are already volunteering</a>
+<% } %>
 
 
 <br>Tags:

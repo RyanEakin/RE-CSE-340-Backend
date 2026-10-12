@@ -113,8 +113,11 @@ const listProjByUserId = async(userId) => {
       WHERE u.user_id = $1;
     `;
 
-    const queryParam = [project_id];
+    const queryParam = [userId];
     const result = await db.query(query, queryParam);
+
+    //verifying that it goes for the projects NOT the user data
+    //console.log(result);
 
     return result.rows;
 };
