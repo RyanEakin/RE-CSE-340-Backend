@@ -219,8 +219,8 @@ CREATE TABLE users (
 -- Insert sample data: users
 -- ========================================
 INSERT INTO users (name, email, password_hash, role_id) 
-VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1),
-        ('admin', 'admin@example.com', 'placeholder_hash', 1);
+VALUES ('admin', 'admin@example.com', 'placeholder_hash', 1),
+        ('testuser', 'test@example.com', 'placeholder_hash', 1);
 
 
 
@@ -253,3 +253,9 @@ ALTER TABLE IF EXISTS public.volunteers
 -- ========================================
 -- Insert sample data: volunteers
 -- ========================================
+INSERT INTO volunteers (user_id, project_id)
+VALUES 
+(1,11),
+(1,1),
+(2,3),
+(2,5);

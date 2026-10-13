@@ -11,10 +11,20 @@
 <br>
 
 <% if (isLoggedIn && !volunDetails.some( volunteered => volunteered.project_id === projDetails[0].project_id)) { %>
-    <a href="/volunteer/<%= projDetails[0].project_id %>">Volunteer for <%= projDetails[0].title %></a>
+    _________________________________
+    <form action="/volunteer/<%= projDetails[0].project_id %>" method="POST">
+        <button type="submit">
+            Volunteer for <%= projDetails[0].title %>
+        </button>
+    </form>
 <% } else if (isLoggedIn) { %>
-    <a href="/opt_out/<%= projDetails[0].project_id %>">You are already volunteering</a>
-<% } %>
+    _________________________________
+    <form action="/opt_out/<%= projDetails[0].project_id %>" method="POST">
+        <button type="submit">
+            You are already volunteering
+        </button>
+    </form>
+<% } // thankful that I looked up how to use the .some() method [AI was a bit helpful]; works perfectly here! %>
 
 
 <br>Tags:

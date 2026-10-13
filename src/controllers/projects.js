@@ -37,7 +37,7 @@ const showProjDetailsPage = async (req,res) => {
 
         const volunDetails = await listProjByUserId(userId);
         //testing to see if this will allow for listing volunteer details for specific user
-        console.log(volunDetails);
+        //console.log(volunDetails);
 
         res.render('proj_details', {title, projDetails, catDetails,volunDetails});
     }else{

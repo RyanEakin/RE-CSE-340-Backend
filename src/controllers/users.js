@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
-import {createUser, authenticateUser, getUserDetails, assignVolunteer} from '../models/users.js';
+import {createUser, authenticateUser, getUserDetails, assignVolunteer, removeVolunteer} from '../models/users.js';
 
 const ShowUserRegForm = async(req,res) => {
     const title = 'New User Registration';
@@ -168,19 +168,32 @@ const volunteerSignUp = async (req,res) => {
             const userId = req.session.user.user_id;
 
             assignVolunteer(userId,projectId);
-            req.flash("you have successfully volunteered for this project!")
+
+            req.flash("success","you have successfully volunteered for this project!");
+            res.redirect(`/project/${projectId}`);
 
         }
     } catch (error) {
-        
+        console.error('Error Signing user up for Service Project:', error);
+        req.flash('error', 'There was an error signing user up for service project. Please try again');
+        res.redirect(`/project/${projectId}`);
     }
 };
 
 const volunteerOptOut = async (req,res) => {
     try {
-        
+        const projectId = req.params.id;
+        if(req.session.user){
+            const userId = req.session.user.user_id;
+
+            removeVolunteer(userId,projectId);
+            req.flash("success","you have opted-out of this project!");
+            res.redirect(`/project/${projectId}`);
+        }
     } catch (error) {
-        
+        console.error('Error Opting user out of Service Project:', error);
+        req.flash('error', 'There was an error opting User out of the service project. Please try again');
+        res.redirect(`/project/${projectId}`);
     }
 };
 

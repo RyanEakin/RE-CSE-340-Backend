@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout, showDashboard, requireCred, requirePerm, showMngemntDashboard } from './controllers/users.js';
+import { ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, showLogin, processLogin, processLogout, showDashboard, requireCred, requirePerm, showMngemntDashboard, volunteerSignUp, volunteerOptOut } from './controllers/users.js';
 
 import { indexPage } from '../src/controllers/index.js';
 
@@ -82,6 +82,9 @@ router.get('/logout', processLogout);
 
 router.get('/dashboard', requireCred, showDashboard);
 router.get('/user_management', requirePerm('admin'), showMngemntDashboard);
+
+router.post('/volunteer/:id',requireCred, volunteerSignUp);
+router.post('/opt_out/:id',requireCred, volunteerOptOut);
 
 //router.get('',);
 //router.post('',);
