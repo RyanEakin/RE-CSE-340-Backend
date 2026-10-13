@@ -186,18 +186,13 @@ const volunteerSignUp = async (req,res) => {
             const result = await assignVolunteer(userId,projectId);
 
             req.flash("success","you have successfully volunteered for this project!");
-            if(process.cwd() === `/project/${projectId}`) { // this checks if the Current Working Directory is /project/:
-                //if true go there
-                res.redirect(`/project/${projectId}`);
-            } else {
-                // if not /project/, go here
-                res.redirect(`/dashboard`);
-            }
+            res.redirect(req.get('referer'));
+
         }
     } catch (error) {
         console.error('Error Signing user up for Service Project:', error);
         req.flash('error', 'There was an error signing user up for service project. Please try again');
-        res.redirect(`/project/${projectId}`);
+        res.redirect(req.get('referer'));
     }
 };
 
@@ -209,18 +204,12 @@ const volunteerOptOut = async (req,res) => {
 
             const result = await removeVolunteer(userId,projectId);
             req.flash("success","you have opted-out of this project!");
-            if(process.cwd() === `/project/${projectId}`) { // this checks if the Current Working Directory is /project/:
-                //if true go there
-                res.redirect(`/project/${projectId}`);
-            } else {
-                // if not /project/, go here
-                res.redirect(`/dashboard`);
-            }
+            res.redirect(req.get('referer'));
         }
     } catch (error) {
         console.error('Error Opting user out of Service Project:', error);
         req.flash('error', 'There was an error opting User out of the service project. Please try again');
-        res.redirect(`/project/${projectId}`);
+        res.redirect(req.get('referer'));
     }
 };
 
