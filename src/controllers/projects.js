@@ -50,12 +50,18 @@ const showNewProjForm = async (req, res) => {
     const organizations = await getAllOrganizations();
     const title = 'Add New Service Project';
 
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     res.render('new_project', { title, organizations });
 }
 
 const processNewProjForm = async (req, res) => {
     // Extract form data from req.body
     const { title, description, location, date, organizationId } = req.body;
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
 
         // Check for validation errors
     const errors = validationResult(req);
@@ -84,6 +90,10 @@ const processNewProjForm = async (req, res) => {
 
 const showEditProjForm = async (req,res) => {
     const projectId = req.params.id;
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
+
     const projDetails = await getProjectDetails(projectId);
     const orgDetails = await getAllOrganizations();
 
@@ -95,6 +105,9 @@ const processEditProjForm = async (req,res) => {
     const projectId = req.params.id;
     const { organizationId, title, description, location, date } = req.body;
     // always remember to name the variables TO the names within the BODY of the html
+
+    res.set('Cache-Control', 'no-store');
+    // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
     
     // testing for the date and if it ACTUALLY gets collected or not
     //console.log("Request body:", req.body);
