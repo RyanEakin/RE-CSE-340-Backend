@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
-import {createUser, authenticateUser, getUserDetails, assignVolunteer, removeVolunteer} from '../models/users.js';
+import {createUser, authenticateUser, getUserDetails, assignVolunteer, removeVolunteer, listProjByUserId} from '../models/users.js';
 
 const ShowUserRegForm = async(req,res) => {
     const title = 'New User Registration';
@@ -143,10 +143,12 @@ const requirePerm = (role) => {
 
 const showDashboard = async(req,res) => {
     const user = req.session.user;
+    const projList = await listProjByUserId(user.user_id);
+    //console.log(projList);
 
-    //console.log(user.name);
+    console.log(user);
 
-    res.render('dashboard', {title: 'Dashboard', name: user.role_name, email: user.email});
+    res.render('dashboard', {title: 'Dashboard', role: user.role_name,name: user.name, email: user.email, projList: projList});
     // had to change user.name to user.role_name for this line to work
 };
 
@@ -167,11 +169,16 @@ const volunteerSignUp = async (req,res) => {
         if(req.session.user){
             const userId = req.session.user.user_id;
 
-            assignVolunteer(userId,projectId);
+            const result = await assignVolunteer(userId,projectId);
 
             req.flash("success","you have successfully volunteered for this project!");
-            res.redirect(`/project/${projectId}`);
-
+            if(process.cwd() === `/project/${projectId}`) { // this checks if the Current Working Directory is /project/:
+                //if true go there
+                res.redirect(`/project/${projectId}`);
+            } else {
+                // if not /project/, go here
+                res.redirect(`/dashboard`);
+            }
         }
     } catch (error) {
         console.error('Error Signing user up for Service Project:', error);
@@ -186,9 +193,15 @@ const volunteerOptOut = async (req,res) => {
         if(req.session.user){
             const userId = req.session.user.user_id;
 
-            removeVolunteer(userId,projectId);
+            const result = await removeVolunteer(userId,projectId);
             req.flash("success","you have opted-out of this project!");
-            res.redirect(`/project/${projectId}`);
+            if(process.cwd() === `/project/${projectId}`) { // this checks if the Current Working Directory is /project/:
+                //if true go there
+                res.redirect(`/project/${projectId}`);
+            } else {
+                // if not /project/, go here
+                res.redirect(`/dashboard`);
+            }
         }
     } catch (error) {
         console.error('Error Opting user out of Service Project:', error);
