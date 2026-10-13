@@ -83,7 +83,6 @@ router.get('/logout', processLogout);
 router.get('/dashboard', requireCred, showDashboard);
 router.get('/user_management', requirePerm('admin'), showMngemntDashboard);
 
-
 //router.get('',);
 //router.post('',);
 

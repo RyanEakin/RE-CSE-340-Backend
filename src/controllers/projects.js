@@ -25,19 +25,21 @@ const showProjDetailsPage = async (req,res) => {
 
     if(req.session.user){ 
         //some extra server-side validation I added because the model code had the wrong name in the queryParam code.
-        // as well as the fact that if someone is NOT logged in, this would cause an error being for all users.
-        // not just the one's logged in
+        // as well as the fact that if someone is NOT logged in, this would cause an error when used for all new users.
         
         const userId = req.session.user.user_id;
         //testing to see what comes through. it was the whole table, now user_id ONLY.
         //console.log(userId);
 
+        const projDetails = await getProjectDetails(projectId);
+        const catDetails = await getCategoriesByProjectId(projectId);
+        const title = 'Project Details';
+
         const volunDetails = await listProjByUserId(userId);
-
         //testing to see if this will allow for listing volunteer details for specific user
-        //console.log(volunDetails);
+        console.log(volunDetails);
 
-        res.render('proj_details', {title, projDetails, catDetails, volunDetails});
+        res.render('proj_details', {title, projDetails, catDetails,volunDetails});
     }else{
         res.render('proj_details', {title, projDetails, catDetails});
     }

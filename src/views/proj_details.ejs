@@ -10,9 +10,9 @@
 
 <br>
 
-<% if (isLoggedIn && volunDetails.project_id !== projDetails[0].project_id) { %>
+<% if (isLoggedIn && !volunDetails.some( volunteered => volunteered.project_id === projDetails[0].project_id)) { %>
     <a href="/volunteer/<%= projDetails[0].project_id %>">Volunteer for <%= projDetails[0].title %></a>
-<% } else if (isLoggedIn && volunDetails.project_id === projDetails[0].project_id) { %>
+<% } else if (isLoggedIn) { %>
     <a href="/opt_out/<%= projDetails[0].project_id %>">You are already volunteering</a>
 <% } %>
 

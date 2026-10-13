@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
-import {createUser, authenticateUser, getUserDetails} from '../models/users.js';
+import {createUser, authenticateUser, getUserDetails, assignVolunteer} from '../models/users.js';
 
 const ShowUserRegForm = async(req,res) => {
     const title = 'New User Registration';
@@ -160,6 +160,30 @@ const showMngemntDashboard = async(req,res) => {
     res.render('user_management',{title, userDetails});
 };
 
+const volunteerSignUp = async (req,res) => {
+    try {
+        const projectId = req.params.id;
+
+        if(req.session.user){
+            const userId = req.session.user.user_id;
+
+            assignVolunteer(userId,projectId);
+            req.flash("you have successfully volunteered for this project!")
+
+        }
+    } catch (error) {
+        
+    }
+};
+
+const volunteerOptOut = async (req,res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+};
+
 const regValidation = [
     body('name')
         .trim()
@@ -196,4 +220,4 @@ const userValidation = [
         .withMessage('Password must be between 3 and 150 characters'),
 ];
 
-export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, requirePerm, showDashboard, showMngemntDashboard, showLogin, processLogin, processLogout}
+export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, requirePerm, showDashboard, showMngemntDashboard, showLogin, processLogin, processLogout, volunteerSignUp, volunteerOptOut}
