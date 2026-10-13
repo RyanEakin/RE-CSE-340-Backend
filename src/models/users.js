@@ -25,7 +25,7 @@ const createUser = async (name, email, passwordHash) => {
 
 const findUserByEmail = async (email) => {
     const query = `
-    SELECT u.user_id, u.email, u.password_hash, r.role_name 
+    SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name 
     FROM users u
     JOIN roles r ON u.role_id = r.role_id
     WHERE u.email = $1
@@ -82,4 +82,53 @@ const getUserDetails = async () => {
 };
 
 
-export { createUser, authenticateUser, getUserDetails };
+//========================================//
+//         Volunteering functions         //
+//========================================//
+
+
+const assignVolunteer = async(userId, projectId) => {
+    const query = `
+        INSERT INTO volunteers (user_id, project_id)
+        VALUES ($1, $2);
+    `;
+
+    await db.query(query, [userId, projectId]);
+};
+
+const listProjByUserId = async(userId) => {
+    const query = `
+      SELECT 
+        p.project_id,
+        p.title,
+        p.description,
+        p.location,
+        p.project_date,
+        p.organization_id
+      FROM public.projects AS p 
+      INNER JOIN public.volunteers AS v 
+      ON p.project_id = v.project_id
+      INNER JOIN public.users AS u 
+      ON u.user_id = v.user_id
+      WHERE u.user_id = $1;
+    `;
+
+    const queryParam = [userId];
+    const result = await db.query(query, queryParam);
+
+    //verifying that it goes for the projects NOT the user data
+    //console.log(result);
+
+    return result.rows;
+};
+
+const removeVolunteer = async(userId,projectId) => {
+    const deleteQuery = `
+        DELETE FROM volunteers
+        WHERE user_id = $1 AND project_id = $2;
+    `;
+    await db.query(deleteQuery, [userId,projectId]);
+};
+
+
+export { createUser, authenticateUser, getUserDetails, assignVolunteer, listProjByUserId, removeVolunteer };

@@ -121,7 +121,7 @@ VALUES
 
 
 -- ========================================
--- create table: project_categories
+-- create bridge table: project_categories
 -- ========================================
 -- Table: public.project_categories
 
@@ -219,5 +219,43 @@ CREATE TABLE users (
 -- Insert sample data: users
 -- ========================================
 INSERT INTO users (name, email, password_hash, role_id) 
-VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1);
+VALUES ('admin', 'admin@example.com', 'placeholder_hash', 1),
+        ('testuser', 'test@example.com', 'placeholder_hash', 1);
 
+
+
+
+-- ========================================
+-- Create Bridge Table: volunteers
+-- ========================================
+CREATE TABLE public.volunteers
+(
+    user_id integer NOT NULL,
+    project_id integer NOT NULL,
+    CONSTRAINT project_user_pkey PRIMARY KEY (user_id, project_id),
+    CONSTRAINT "Project_id_fkey" FOREIGN KEY (project_id)
+        REFERENCES public.projects (project_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+);
+
+ALTER TABLE IF EXISTS public.volunteers
+    OWNER to re_db_admin;
+
+
+
+-- ========================================
+-- Insert sample data: volunteers
+-- ========================================
+INSERT INTO volunteers (user_id, project_id)
+VALUES 
+(1,11),
+(1,1),
+(2,3),
+(2,5);

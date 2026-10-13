@@ -5,8 +5,27 @@
 <% projDetails.forEach(project => { %>
     <p><strong><%= project.title %></strong>: <%= project.description %> <br> <strong>Date:</strong> <%= project.project_date %> ; <strong>Location:</strong> <%= project.location %></p>
     <a href="/organization/<%= project.organization_id %>">Back to <%= project.name %></a>
+
 <% }); %>
 
+<br>
+
+<% if (isLoggedIn && !volunDetails.some( volunteered => volunteered.project_id === projDetails[0].project_id)) { %>
+    _________________________________
+    <form action="/volunteer/<%= projDetails[0].project_id %>" method="POST">
+        <button type="submit">
+            Volunteer for <%= projDetails[0].title %>
+        </button>
+    </form>
+<% } else if (isLoggedIn) { %>
+    _________________________________
+    <form action="/opt_out/<%= projDetails[0].project_id %>" method="POST">
+        <button type="submit">
+            You are already volunteering
+        </button>
+    </form>
+<% } // thankful that I looked up how to use the .some() method [AI was a bit helpful]; works perfectly here! %>
+<%   // it works by checking if you already have a connection to the project via the volunteer bridge table, if not, volunteer! else you already did!%>
 
 
 <br>Tags:

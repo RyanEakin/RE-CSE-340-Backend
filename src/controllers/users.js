@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
-import {createUser, authenticateUser, getUserDetails} from '../models/users.js';
+import {createUser, authenticateUser, getUserDetails, assignVolunteer, removeVolunteer, listProjByUserId} from '../models/users.js';
 
 const ShowUserRegForm = async(req,res) => {
     const title = 'New User Registration';
@@ -149,12 +149,16 @@ const requirePerm = (role) => {
 
 const showDashboard = async(req,res) => {
     const user = req.session.user;
+    const projList = await listProjByUserId(user.user_id);
+    //console.log(projList);
+
+    //console.log(user);
+  
     res.set('Cache-Control', 'no-store');
     // this is used to remove the cached page from memory when logging out, so that back one page info leaks DON'T occur
     
-    //console.log(user.name);
 
-    res.render('dashboard', {title: 'Dashboard', name: user.role_name, email: user.email});
+    res.render('dashboard', {title: 'Dashboard', role: user.role_name,name: user.name, email: user.email, projList: projList});
     // had to change user.name to user.role_name for this line to work
 };
 
@@ -170,6 +174,54 @@ const showMngemntDashboard = async(req,res) => {
     //console.log(userDetails);
 
     res.render('user_management',{title, userDetails});
+};
+
+const volunteerSignUp = async (req,res) => {
+    try {
+        const projectId = req.params.id;
+
+        if(req.session.user){
+            const userId = req.session.user.user_id;
+
+            const result = await assignVolunteer(userId,projectId);
+
+            req.flash("success","you have successfully volunteered for this project!");
+            if(process.cwd() === `/project/${projectId}`) { // this checks if the Current Working Directory is /project/:
+                //if true go there
+                res.redirect(`/project/${projectId}`);
+            } else {
+                // if not /project/, go here
+                res.redirect(`/dashboard`);
+            }
+        }
+    } catch (error) {
+        console.error('Error Signing user up for Service Project:', error);
+        req.flash('error', 'There was an error signing user up for service project. Please try again');
+        res.redirect(`/project/${projectId}`);
+    }
+};
+
+const volunteerOptOut = async (req,res) => {
+    try {
+        const projectId = req.params.id;
+        if(req.session.user){
+            const userId = req.session.user.user_id;
+
+            const result = await removeVolunteer(userId,projectId);
+            req.flash("success","you have opted-out of this project!");
+            if(process.cwd() === `/project/${projectId}`) { // this checks if the Current Working Directory is /project/:
+                //if true go there
+                res.redirect(`/project/${projectId}`);
+            } else {
+                // if not /project/, go here
+                res.redirect(`/dashboard`);
+            }
+        }
+    } catch (error) {
+        console.error('Error Opting user out of Service Project:', error);
+        req.flash('error', 'There was an error opting User out of the service project. Please try again');
+        res.redirect(`/project/${projectId}`);
+    }
 };
 
 const regValidation = [
@@ -208,4 +260,4 @@ const userValidation = [
         .withMessage('Password must be between 3 and 150 characters'),
 ];
 
-export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, requirePerm, showDashboard, showMngemntDashboard, showLogin, processLogin, processLogout}
+export {ShowUserRegForm, ProcessUserRegForm, regValidation, userValidation, requireCred, requirePerm, showDashboard, showMngemntDashboard, showLogin, processLogin, processLogout, volunteerSignUp, volunteerOptOut}

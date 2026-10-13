@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { getCategoriesByProjectId} from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { getAllProjects, getProjectsByOrganizationId, getProjectDetails, getUpcomingProjects, createProject, updateProject } from '../models/projects.js';
+import { listProjByUserId } from '../models/users.js';
 
 const projectPage = async (req, res) => {
     const project_num = 5;
@@ -14,11 +15,34 @@ const projectPage = async (req, res) => {
 
 const showProjDetailsPage = async (req,res) => {
     const projectId = req.params.id;
+
+    // testing for weird project_id is undefined bug
+    //console.log(projectId);
+
     const projDetails = await getProjectDetails(projectId);
     const catDetails = await getCategoriesByProjectId(projectId);
     const title = 'Project Details';
 
-    res.render('proj_details', {title, projDetails, catDetails});
+    if(req.session.user){ 
+        //some extra server-side validation I added because the model code had the wrong name in the queryParam code.
+        // as well as the fact that if someone is NOT logged in, this would cause an error when used for all new users.
+        
+        const userId = req.session.user.user_id;
+        //testing to see what comes through. it was the whole table, now user_id ONLY.
+        //console.log(userId);
+
+        const projDetails = await getProjectDetails(projectId);
+        const catDetails = await getCategoriesByProjectId(projectId);
+        const title = 'Project Details';
+
+        const volunDetails = await listProjByUserId(userId);
+        //testing to see if this will allow for listing volunteer details for specific user
+        //console.log(volunDetails);
+
+        res.render('proj_details', {title, projDetails, catDetails,volunDetails});
+    }else{
+        res.render('proj_details', {title, projDetails, catDetails});
+    }
 
 };
 

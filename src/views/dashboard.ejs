@@ -3,10 +3,39 @@
     <h1><%= title %></h1>
 
     <h2>Dashboard</h2>
+    <p>Role: <%= role %></p>
     <p>Name: <%= name %></p>
     <p>Email: <%= email %></p>
 
+    <% if(projList.length !== 0) { %>
+        <table>
+            <tr>
+                <td>Project Name</td>
+                <td>Opt-Out of Project</td>
+            </tr>
+        <% projList.forEach(project => { %>
+            <tr>
+                <td><a href="/project/<%= project.project_id %>"> <%= project.title%> </a></td>
+                <td>
+                    <form action="/opt_out/<%= project.project_id %>" method="POST">
+                        <button type="submit">
+                            Remove Project
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+        </table>
+    <% } %>
+
+    
+
     <% if (user && user.role_name === 'admin') { %>
+        <% if (projList) { %>
+            <br>
+            ___________________________________
+            <br>
+        <% } %>
         <a href="/user_management">Manage User Accounts</a>
     <% } %>
 </main>
